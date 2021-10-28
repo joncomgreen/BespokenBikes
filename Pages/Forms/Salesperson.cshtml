@@ -1,0 +1,102 @@
+﻿@page
+@model BespokenBikes.Pages.Forms.SalespersonModel
+@{
+}
+<script>
+    function Edits() {
+        var inputs = document.getElementsByName("updatebox");
+        var statics = document.getElementsByName("staticbox");
+        for (var i = 0, max = inputs.length; i < max; i++) {
+            inputs[i].style.display = "block";
+        }
+        for (var i = 0, max = statics.length; i < max; i++) {
+            statics[i].style.display = "none";
+        }
+
+    }
+    function Cancel() {
+        var inputs = document.getElementsByName("updatebox");
+        var statics = document.getElementsByName("staticbox");
+
+        for (var i = 0, max = inputs.length; i < max; i++) {
+            inputs[i].style.display = "none";
+        }
+
+        for (var i = 0, max = statics.length; i < max; i++) {
+            statics[i].style.display = "block";
+        }
+
+    }
+</script>
+<h1>Create Salesperson</h1>
+<form method="post" asp-page-handler="add">
+    <input type="text" asp-for="SalesPerson.FirstName" placeholder="Enter First Name" />
+    <input type="text" asp-for="SalesPerson.LastName" placeholder="Enter Last Name" />
+    <input type="text" asp-for="SalesPerson.Address" placeholder="Enter Address" />
+    <input type="text" asp-for="SalesPerson.Phone" placeholder="Enter Phone" />
+    <input type="date" asp-for="SalesPerson.StartDate" />
+    <input type="date" asp-for="SalesPerson.TerminationDate" />
+    <input type="text" asp-for="SalesPerson.Manager" />
+    <button type="submit">Submit</button>
+</form>
+
+<form method="post">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">Modifiers</th>
+            </tr>
+        </thead>
+        @foreach (var element in Model.SalesPersonEntities)
+        {
+
+            <tr>
+                <td>
+                    <div>@element.Id</div>
+                    <input type="hidden" name="id" value="@element.Id" asp-for="SalesPerson.Id" />
+                </td>
+
+                <td>
+                    <div name="staticbox">@element.FirstName</div>
+                    <input type="text" name="updatebox" value="@element.FirstName" asp-for="SalesPerson.FirstName" style="display:none" />
+                </td>
+                <td>
+                    <div name="staticbox">@element.LastName</div>
+                    <input type="text" name="updatebox" value="@element.LastName" asp-for="SalesPerson.LastName" style="display:none" />
+                </td>
+                <td>
+                    <div name="staticbox">@element.Address </div>
+                    <input type="text" name="updatebox" value="@element.Address" asp-for="SalesPerson.Phone" style="display:none" />
+                </td>
+                <td>
+                    <div name="staticbox">@element.Phone</div>
+                    <input type="number" name="updatebox" value="@element.Phone" asp-for="SalesPerson.Phone" style="display:none" />
+                </td>
+                <td>
+                    <div name="staticbox">@element.StartDate</div>
+                    <input type="datetime" name="updatebox" value="@element.StartDate" asp-for="SalesPerson.StartDate" style="display:none" />
+                </td>
+                <td>
+                    <button type="button" name="staticbox" onclick="Edits()">Edit</button>
+                    <button type="button" onclick="Cancel()" name="updatebox" style="display:none">Cancel</button>
+                    <div name="updatebox" style="display:none">
+                        <button type="submit" asp-page-handler="edit">Update</button>
+                    </div>
+
+                    <button type="submit" asp-page-handler="delete">Delete</button>
+
+                    <input type="hidden" name="id" value="@element.Id" asp-route-id="@element.Id" asp-for="SalesPerson.Id" />
+                </td>
+                <td>
+                </td>
+            </tr>
+        }
+
+    </table>
+</form>
